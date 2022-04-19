@@ -12,6 +12,11 @@ double normal_cdf(double const x) {
 	return std::erfc(-x / std::sqrt(x)) / 2;
 }
 
+double normal_pdf(double const x, double const mean, double const std) {
+	double pi = 2 * asin(1.0);
+	return exp(-pow((x - mean) / std, 2) / 2) / (std * sqrt(2 * pi));
+}
+
 double mean(std::vector<double> const& values) {
 	return std::accumulate(std::begin(values), std::end(values), 0.0) / static_cast<double>(values.size());
 }

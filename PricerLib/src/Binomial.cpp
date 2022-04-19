@@ -30,10 +30,6 @@ std::vector<std::vector<std::shared_ptr<node>>> init_nodes(double const s0, int 
 	return nodes;
 }
 
-double get_neutral_risk_proba(double const rate, double const up_coeff, double const down_coeff) {
-	return (1 + rate - down_coeff) / (up_coeff - down_coeff);
-}
-
 double calculate_option_price(std::vector<std::vector<std::shared_ptr<node>>> const& tree, bool const is_euro, bool const is_call, int const periods, double const strike, double const n_r_proba, double const rate) {
 
 	for (auto period = periods; period >= 0; period--) {
@@ -59,15 +55,27 @@ double calculate_option_price(std::vector<std::vector<std::shared_ptr<node>>> co
 }
 
 
-double pricer::binomial::get_option_price(bool const is_euro, bool const is_call, double const s0, double const strike, int const periods, double const rate, double const volatility)
+double pricer::binomial::get_option_price(bool const is_euro, bool const is_call, int const periods, double const s0, double const strike, double const maturity, double const rate, double const volatility)
 {
 	// TODO : Manage arbitrage exception
 
-	auto const up_coeff = exp(volatility * sqrt(periods));
-	auto const down_coeff = 1.0 / up_coeff;
-	auto const n_r_proba = get_neutral_risk_proba(rate, up_coeff, down_coeff);
+	auto const up_coeff = get_up_coeff(volatility, periods, maturity);
+	auto const down_coeff = get_down_coeff(volatility, periods, maturity);
+	auto const n_r_proba = get_neutral_risk_proba(rate, maturity, up_coeff, down_coeff);
 	auto const tree = init_nodes(s0, periods, up_coeff, down_coeff);
 
 	return calculate_option_price(tree, is_euro, is_call, periods, strike, n_r_proba, rate);
+}
+
+double pricer::binomial::get_up_coeff(double const volatility, int const periods, double const maturity) {
+	return exp(volatility * sqrt(maturity / periods));
+}
+
+double pricer::binomial::get_down_coeff(double const volatility, int const periods, double const maturity) {
+	return exp(-volatility * sqrt(maturity / periods));
+}
+
+double pricer::binomial::get_neutral_risk_proba(double const rate, double const maturity, double const up_coeff, double const down_coeff) {
+	return (exp(-rate * maturity) - down_coeff) / (up_coeff - down_coeff);
 }
 

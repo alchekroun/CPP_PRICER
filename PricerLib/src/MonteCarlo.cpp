@@ -16,11 +16,11 @@ std::pair<double, double> pricer::mcarlo::get_option_price(bool const is_call, d
 	// Variables
 	std::vector<double> spot(nb_path);
 	std::vector<double> option_price(nb_path);
-	std::vector<double> average_var_ctrl(nb_path); // Control variables
+	std::vector<double> average_var_ctrl(nb_path);	// Control variables
 
 	for (auto i = 0; i < nb_path; i++) {
 		auto const epsilon = d(gen);
-
+		
 		spot[i] = s0 * exp((rate - 0.5 * pow(volatility, 2)) * maturity + volatility * epsilon * sqrt(maturity));
 		option_price[i] = get_payoff(is_call, spot[i], strike);
 
