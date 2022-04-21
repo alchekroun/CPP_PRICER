@@ -48,6 +48,10 @@ double pricer::bsm::get_gamma(double const spot, double const strike, double con
 	return exp(-dividend * maturity) * normal_pdf(d1_d2.first) / (spot * volatility * sqrt(maturity));
 }
 
+double pricer::bsm::get_theta(bool is_call, double spot, double strike, double rate, double dividend, double volatility, double maturity) {
+	return 0.0;
+}
+
 double pricer::bsm::get_vega(bool const is_call, double const spot, double const strike, double const rate, double const dividend, double const volatility, double const maturity) {
 	auto const d1_d2 = get_d1_d2(spot, strike, volatility, rate, 0, maturity);
 	auto const d1_used = is_call ? d1_d2.first : -d1_d2.first;
