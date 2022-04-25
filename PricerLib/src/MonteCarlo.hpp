@@ -4,6 +4,9 @@
 namespace pricer {
 	namespace mcarlo {
 
+		/**
+		 * @brief Specifies the methodo used for MC. Optimized implements antithetic variates and control variates.
+		 */
 		enum methodo {
 			basic,
 			optimized

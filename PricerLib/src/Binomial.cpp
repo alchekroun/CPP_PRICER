@@ -1,5 +1,6 @@
 #include "Binomial.hpp"
 
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -76,6 +77,6 @@ double pricer::binomial::get_down_coeff(double const volatility, int const perio
 }
 
 double pricer::binomial::get_neutral_risk_proba(double const rate, double const maturity, double const up_coeff, double const down_coeff) {
-	return (exp(-rate * maturity) - down_coeff) / (up_coeff - down_coeff);
+	return (exp(rate * maturity) - down_coeff) / (up_coeff - down_coeff);
 }
 
