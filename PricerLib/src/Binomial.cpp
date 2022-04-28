@@ -37,7 +37,7 @@ double calculate_option_price(std::vector<std::vector<std::shared_ptr<node>>> co
 		for (auto n = 0; n <= period; n++) {
 			auto& tmp_node = tree[period][n];
 			if (period == periods) {
-				tmp_node->price = get_payoff(is_call, tmp_node->underlying, strike);
+				tmp_node->price = pricer::utils::get_payoff(is_call, tmp_node->underlying, strike);
 			}
 			else {
 				auto const value = (n_r_proba * tree[period + 1][n + 1]->price + (1 - n_r_proba) * tree[period + 1][n]->price) / (1 + rate);
@@ -45,7 +45,7 @@ double calculate_option_price(std::vector<std::vector<std::shared_ptr<node>>> co
 					tmp_node->price = value;
 				}
 				else {
-					tmp_node->price = std::max(value, get_payoff(is_call, tmp_node->underlying, strike));
+					tmp_node->price = std::max(value, pricer::utils::get_payoff(is_call, tmp_node->underlying, strike));
 				}
 			}
 		}

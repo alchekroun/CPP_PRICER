@@ -9,8 +9,8 @@ int main() {
 	double const strike = 60;
 	double const rate = 0.02;
 	double const vol = 0.25;
-	double const maturity = 2;
-	double const dividend = 0.2;
+	double const maturity = 1;
+	double const dividend = 0.0;
 
 	std::cout << "-# Binomial :" << pricer::binomial::get_option_price(true, true, 50, spot, strike, maturity, rate, vol) << std::endl;
 
@@ -22,8 +22,8 @@ int main() {
 	std::cout << "\n-# BSM : " << pricer::bsm::get_option_price(true, spot, strike, rate, vol, maturity, dividend) << std::endl;
 
 	std::cout << "Delta : " << pricer::bsm::get_delta(true, spot, strike, rate, vol, maturity, dividend) << std::endl;
-	std::cout << "Theta : " << pricer::bsm::get_theta(true, spot, strike, rate, 0.2, vol, maturity) << std::endl;
-	std::cout << "Gamma : " << pricer::bsm::get_gamma(spot, strike, rate, 0.2, vol, maturity) << std::endl;
-	std::cout << "Vega : " << pricer::bsm::get_vega(true, spot, strike, rate, 0.2, vol, maturity) << std::endl;
-	std::cout << "Rho : " << pricer::bsm::get_rho(true, spot, strike, rate, 0.2, vol, maturity) << std::endl;
+	std::cout << "Theta : " << pricer::bsm::get_theta(true, spot, strike, rate, vol, maturity, dividend) << std::endl;
+	std::cout << "Gamma : " << pricer::bsm::get_gamma(spot, strike, rate, vol, maturity, dividend) << std::endl;
+	std::cout << "Vega : " << pricer::bsm::get_vega(true, spot, strike, rate, vol, maturity, dividend) << std::endl;
+	std::cout << "Rho : " << pricer::bsm::get_rho(true, spot, strike, rate, vol, maturity, dividend) << std::endl;
 }

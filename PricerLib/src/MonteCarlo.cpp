@@ -20,12 +20,12 @@ std::pair<double, double> get_option_price_basic(bool const is_call, double cons
 		auto const epsilon = d(gen);
 
 		spot[i] = s0 * exp((rate - 0.5 * pow(volatility, 2)) * maturity + volatility * epsilon * sqrt(maturity));
-		option_price[i] = get_payoff(is_call, spot[i], strike);
+		option_price[i] = pricer::utils::get_payoff(is_call, spot[i], strike);
 	}
 
-	double const final_option_price = exp(-rate * maturity) * mean(option_price);
+	double const final_option_price = exp(-rate * maturity) * pricer::utils::mean(option_price);
 
-	double const error = exp(-rate * maturity) * stdd(option_price) / sqrt(nb_path);
+	double const error = exp(-rate * maturity) * pricer::utils::stdd(option_price) / sqrt(nb_path);
 
 	std::pair<double, double> const interval(final_option_price - error, final_option_price + error);
 	std::cout << "C0 : " << final_option_price << "\tInterval  = [" << interval.first << ", " << interval.second << "]" << "\tControle : " << interval.second - interval.first << std::endl;
@@ -49,22 +49,22 @@ std::pair<double, double> get_option_price_optimized(bool const is_call, double 
 		auto const epsilon = d(gen);
 
 		spot[i] = s0 * exp((rate - 0.5 * pow(volatility, 2)) * maturity + volatility * epsilon * sqrt(maturity));
-		option_price[i] = get_payoff(is_call, spot[i], strike);
+		option_price[i] = pricer::utils::get_payoff(is_call, spot[i], strike);
 
 		auto const var_ctrl = option_price[i] - spot[i] + s0 * exp(rate * maturity);
 
 		// Antithetic
 		auto const anti_spot = s0 * exp((rate - 0.5 * pow(volatility, 2)) * maturity + volatility * -epsilon * sqrt(maturity));
-		auto const anti_option_price = get_payoff(is_call, spot[i], strike);
+		auto const anti_option_price = pricer::utils::get_payoff(is_call, spot[i], strike);
 
 		auto const anti_var_ctrl = anti_option_price - anti_spot + s0 * exp(rate * maturity);
 
 		average_var_ctrl[i] = (var_ctrl + anti_var_ctrl) / 2;
 	}
 
-	double const final_option_price = exp(-rate * maturity) * mean(average_var_ctrl);
+	double const final_option_price = exp(-rate * maturity) * pricer::utils::mean(average_var_ctrl);
 
-	double const error = exp(-rate * maturity) * stdd(average_var_ctrl) / sqrt(nb_path);
+	double const error = exp(-rate * maturity) * pricer::utils::stdd(average_var_ctrl) / sqrt(nb_path);
 
 	std::pair<double, double> const interval(final_option_price - error, final_option_price + error);
 	std::cout << "C0 : " << final_option_price << "\tInterval  = [" << interval.first << ", " << interval.second << "]" << "\tControle : " << interval.second - interval.first << std::endl;

@@ -3,8 +3,6 @@
 namespace pricer {
 	namespace bsm {
 
-		// TODO : REVOIR BSM DIVIDEN
-
 		/**
 		 * @brief Calculate the price of a vanilla option with BSM formula
 		 * @param is_call True if it is a call, otherwise it is a put
