@@ -10,7 +10,7 @@ int main() {
 	double const rate = 0.02;
 	double const vol = 0.25;
 	double const maturity = 1;
-	double const dividend = 0.0;
+	double const dividend = 0.02;
 
 	std::cout << "-# Binomial :" << pricer::binomial::get_option_price(true, true, 50, spot, strike, maturity, rate, vol) << std::endl;
 

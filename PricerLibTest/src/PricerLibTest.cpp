@@ -14,7 +14,7 @@ namespace pricer_lib_test {
 		double const rate_ = 0.02;
 		double const vol_ = 0.25;
 		double const maturity_ = 1;
-		double const dividend_ = 0;
+		double const dividend_ = 0.02;
 
 public:
 	TEST_METHOD(utils_get_payoff) {
@@ -65,7 +65,7 @@ public:
 
 	TEST_METHOD(mc_get_option_price_basic) {
 		// GIVEN
-		int const nb_path = 3000000;
+		int const nb_path = 30000000;
 
 		// WHEN
 		auto const option_price = pricer::mcarlo::get_option_price(true, spot_, strike_, rate_, vol_, maturity_, nb_path);
@@ -138,7 +138,7 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_option_price(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_option_price(true, spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(41.31, custom_round(result, 2));
@@ -148,7 +148,7 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_delta(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_delta(true, spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(0.99, custom_round(result, 2));
@@ -158,7 +158,7 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_theta(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_theta(true, spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(-1.54, custom_round(result, 2));
@@ -168,7 +168,7 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_gamma(spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_gamma(spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(0.01, custom_round(result, 2));
@@ -178,7 +178,7 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_vega(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_vega(true, spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(3.19, custom_round(result, 2));
@@ -188,10 +188,70 @@ public:
 		// GIVEN
 
 		// WHEN
-		double const result = pricer::bsm::get_rho(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+		double const result = pricer::bsm::get_rho(true, spot_, strike_, rate_, vol_, maturity_);
 
 		// THEN
 		Assert::AreEqual(57.47, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_option_price_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_option_price(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(39.36, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_delta_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_delta(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(0.97, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_theta_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_theta(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(0.33, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_gamma_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_gamma(spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(0.01, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_vega_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_vega(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(3.73, custom_round(result, 2));
+	}
+
+	TEST_METHOD(bsm_get_rho_dividend) {
+		// GIVEN
+
+		// WHEN
+		double const result = pricer::bsm::get_rho(true, spot_, strike_, rate_, vol_, maturity_, dividend_);
+
+		// THEN
+		Assert::AreEqual(57.20, custom_round(result, 2));
 	}
 	};
 }

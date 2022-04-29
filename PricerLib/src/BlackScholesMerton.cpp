@@ -50,15 +50,8 @@ double pricer::bsm::get_vega(bool const is_call, double const spot, double const
 
 double pricer::bsm::get_rho(bool const is_call, double const spot, double const strike, double const rate, double const volatility, double const maturity, double const dividend) {
 	auto const d1_d2 = get_d1_d2(spot, strike, volatility, rate, dividend, maturity);
-
-	if (dividend <= 0.000001) {
-		auto const d2_used = is_call ? d1_d2.second : -d1_d2.second;
-		auto const rho = strike * maturity * exp(-rate * maturity) * utils::normal_cdf(d2_used);
-
-		return rho * (is_call ? 1 : -1);
-	}
-	auto const d1_used = is_call ? d1_d2.first : -d1_d2.first;
-	auto const rho = spot * maturity * exp(-dividend * maturity) * utils::normal_cdf(d1_used);
+	auto const d2_used = is_call ? d1_d2.second : -d1_d2.second;
+	auto const rho = strike * maturity * exp(-rate * maturity) * utils::normal_cdf(d2_used);
 
 	return rho * (is_call ? 1 : -1);
 }
