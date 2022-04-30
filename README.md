@@ -14,7 +14,7 @@ You can easily download the library ```PricerLib```. And add to your project wit
 ## Project
 
 The following project is composed of three parts:
-- App : Main application that uses ```PricerLib```
+- App : Sample application that uses ```PricerLib``` *NO ERROR MANAGEMENT HERE !*
 - ```PricerLib``` : Main library
 - PricerLibTest : Main library tests
 

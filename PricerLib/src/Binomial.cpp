@@ -56,12 +56,10 @@ double calculate_option_price(std::vector<std::vector<std::shared_ptr<node>>> co
 }
 
 
-double pricer::binomial::get_option_price(bool const is_euro, bool const is_call, int const periods, double const s0, double const strike, double const maturity, double const rate, double const volatility)
-{
-	// TODO : Manage arbitrage exception
-
+double pricer::binomial::get_option_price(bool const is_euro, bool const is_call, int const periods, double const s0, double const strike, double const maturity, double const rate, double const volatility) {
 	auto const up_coeff = get_up_coeff(volatility, periods, maturity);
 	auto const down_coeff = get_down_coeff(volatility, periods, maturity);
+	if (down_coeff >= rate + 1 >= up_coeff) throw std::invalid_argument("Arbitrage exception");
 	auto const n_r_proba = get_neutral_risk_proba(rate, maturity, up_coeff, down_coeff);
 	auto const tree = init_nodes(s0, periods, up_coeff, down_coeff);
 
